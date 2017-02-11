@@ -13,5 +13,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Event extends Model
 {
-
+    /**
+     * Get the images for the event.
+     */
+    public function images()
+    {
+        return $this->hasMany('App\EventImage');
+    }
 }

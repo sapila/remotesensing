@@ -10,6 +10,8 @@ namespace App\Http\Controllers;
 
 
 use App\Event;
+use App\EventImage;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class EventController extends Controller
@@ -83,5 +85,34 @@ class EventController extends Controller
         $field->delete();
 
         return response()->json([], 200);
+    }
+
+    public function addImage(Request $request, $device_id, $event_id)
+    {
+        $data = base64_decode($request->input('base64_image'));
+
+        $filename = $device_id . Carbon::now()->getTimestamp() . '.jpg';
+        $filepath = 'uploads'.DIRECTORY_SEPARATOR . $filename;
+        file_put_contents(public_path($filepath), $data);
+
+        $eventImage = new EventImage();
+        $eventImage->event_id  = $event_id;
+        $eventImage->filename = $filename;
+        $eventImage->save();
+
+        return response()->json($eventImage, 200);
+    }
+
+    /**
+     * Get EventImages
+     *
+     * @param Request $request
+     * @param $device_id
+     * @param $event_id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getImages(Request $request, $device_id, $event_id)
+    {
+        return response()->json(EventImage::where('event_id', $event_id)->get());
     }
 }

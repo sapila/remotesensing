@@ -9,6 +9,9 @@
 namespace App\Http\Controllers;
 
 use App\Field;
+use App\FieldImage;
+use Carbon\Carbon;
+use Illuminate\Http\File;
 use Illuminate\Http\Request;
 
 class FieldController extends Controller
@@ -79,5 +82,42 @@ class FieldController extends Controller
         $field->delete();
 
         return response()->json([], 200);
+    }
+
+    /**
+     * Connect image to field
+     *
+     * @param Request $request
+     * @param $devide_id
+     * @param $field_id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function addImage(Request $request, $device_id, $field_id)
+    {
+        $data = base64_decode($request->input('base64_image'));
+
+        $filename = $device_id . Carbon::now()->getTimestamp() . '.jpg';
+        $filepath = 'uploads'.DIRECTORY_SEPARATOR . $filename;
+        file_put_contents(public_path($filepath), $data);
+
+        $fieldImage = new FieldImage();
+        $fieldImage->field_id  = $field_id;
+        $fieldImage->filename = $filename;
+        $fieldImage->save();
+
+        return response()->json($fieldImage, 200);
+    }
+
+    /**
+     * Get Field Images
+     *
+     * @param Request $request
+     * @param $device_id
+     * @param $field_id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getImages(Request $request, $device_id, $field_id)
+    {
+        return response()->json(FieldImage::where('field_id', $field_id)->get());
     }
 }

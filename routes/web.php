@@ -14,15 +14,31 @@
 $app->get('/', function () use ($app) {
     echo 'alll here ' . '<br>';
     echo PHP_EOL . $app->version();
-    return PHP_EOL.'lol';
+    return url('uploads/');
 });
 
+// Fields
 $app->get('/api/{device_id}/fields', 'FieldController@index');
 $app->post('/api/{device_id}/fields', 'FieldController@create');
 $app->put('/api/{device_id}/fields/{field_id}', 'FieldController@update');
 $app->delete('/api/{device_id}/fields/{field_id}', 'FieldController@delete');
 
+// Field images
+$app->post('/api/{device_id}/fields/{field_id}/image', 'FieldController@addImage');
+$app->get('/api/{device_id}/fields/{field_id}/images', 'FieldController@getImages');
+
+// Events
 $app->get('/api/{device_id}/events', 'EventController@index');
 $app->post('/api/{device_id}/events', 'EventController@create');
 $app->put('/api/{device_id}/events/{event_id}', 'EventController@update');
 $app->delete('/api/{device_id}/events/{event_id}', 'EventController@delete');
+
+$app->post('/api/{device_id}/events/{event_id}/image', 'EventController@addImage');
+$app->get('/api/{device_id}/events/{event_id}/images', 'EventController@getImages');
+
+
+//Images
+$app->get('/api/images/fields/{image_id}', 'ImageController@fieldImage');
+
+$app->get('/api/images/events/{image_id}', 'ImageController@eventImage');
+

@@ -9,6 +9,7 @@
 namespace App\Http\Controllers;
 
 use App\Field;
+use App\FieldComment;
 use App\FieldImage;
 use Carbon\Carbon;
 use Illuminate\Http\File;
@@ -43,6 +44,7 @@ class FieldController extends Controller
         $field->perioxi_xorafiou = $request->input('perioxi_xorafiou');
         $field->etos_kaliergias = $request->input('etos_kaliergias');
         $field->onoma_kaliergiti = $request->input('onoma_kaliergiti');
+        $field->eidos = $request->input('eidos');
         $field->save();
 
         return response()->json($field, 200);
@@ -63,6 +65,7 @@ class FieldController extends Controller
         $field->perioxi_xorafiou = $request->input('perioxi_xorafiou');
         $field->etos_kaliergias = $request->input('etos_kaliergias');
         $field->onoma_kaliergiti = $request->input('onoma_kaliergiti');
+        $field->eidos = $request->input('eidos');
         $field->save();
 
         return response()->json($field, 200);
@@ -100,9 +103,12 @@ class FieldController extends Controller
         $filepath = 'uploads'.DIRECTORY_SEPARATOR . $filename;
         file_put_contents(public_path($filepath), $data);
 
+        $android_filepath = $request->input('filepath');
+
         $fieldImage = new FieldImage();
         $fieldImage->field_id  = $field_id;
         $fieldImage->filename = $filename;
+        $fieldImage->filepath = $android_filepath;
         $fieldImage->save();
 
         return response()->json($fieldImage, 200);
@@ -120,4 +126,5 @@ class FieldController extends Controller
     {
         return response()->json(FieldImage::where('field_id', $field_id)->get());
     }
+
 }

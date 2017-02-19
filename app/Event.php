@@ -20,4 +20,9 @@ class Event extends Model
     {
         return $this->hasMany('App\EventImage');
     }
+
+    public function comments()
+    {
+        return $this->hasMany('App\EventComment');
+    }
 }

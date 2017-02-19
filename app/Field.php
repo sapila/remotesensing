@@ -20,4 +20,9 @@ class Field extends Model
     {
         return $this->hasMany('App\FieldImage');
     }
+
+    public function comments()
+    {
+        return $this->hasMany('App\FieldComment');
+    }
 }

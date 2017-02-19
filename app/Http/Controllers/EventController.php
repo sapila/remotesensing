@@ -44,6 +44,7 @@ class EventController extends Controller
         $event->perioxi_xorafiou = $request->input('perioxi_xorafiou');
         $event->etos_kaliergias = $request->input('etos_kaliergias');
         $event->onoma_kaliergiti = $request->input('onoma_kaliergiti');
+        $event->eidos = $request->input('eidos');
         $event->save();
 
         return response()->json($event, 200);
@@ -66,6 +67,7 @@ class EventController extends Controller
         $event->perioxi_xorafiou = $request->input('perioxi_xorafiou');
         $event->etos_kaliergias = $request->input('etos_kaliergias');
         $event->onoma_kaliergiti = $request->input('onoma_kaliergiti');
+        $event->eidos = $request->input('eidos');
         $event->save();
 
         return response()->json($event, 200);
@@ -95,9 +97,12 @@ class EventController extends Controller
         $filepath = 'uploads'.DIRECTORY_SEPARATOR . $filename;
         file_put_contents(public_path($filepath), $data);
 
+        $android_filepath = $request->input('filepath');
+
         $eventImage = new EventImage();
         $eventImage->event_id  = $event_id;
         $eventImage->filename = $filename;
+        $eventImage->filepath = $android_filepath;
         $eventImage->save();
 
         return response()->json($eventImage, 200);
@@ -115,4 +120,5 @@ class EventController extends Controller
     {
         return response()->json(EventImage::where('event_id', $event_id)->get());
     }
+
 }

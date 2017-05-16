@@ -44,7 +44,7 @@ class ImageController extends Controller
         return response()->json([], 200);
     }
 
-
+    // TODO Comments need their own Controller
     /**
      * Get Field Comments
      *
@@ -108,6 +108,8 @@ class ImageController extends Controller
         return response()->json([], 200);
     }
 
+
+    // TODO Comments need thei own Controller
     /**
      * Get Comments for event
      * @param Request $request
